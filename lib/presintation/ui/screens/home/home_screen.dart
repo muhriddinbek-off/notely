@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notely/presintation/cubit/home_cubit.dart';
 import 'package:notely/presintation/global.dart';
-
 import '../../resources/app_styles.dart';
+import '../../widgets/notes_task.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -45,7 +45,25 @@ class HomeScreen extends StatelessWidget {
                 minimumSize: const MaterialStatePropertyAll(Size(0, 45)),
                 shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
               ),
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Add Note'),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(Icons.close)),
+                          ],
+                        ),
+                      );
+                    });
+              },
               child: const Text('+  Add'),
             ),
           ],
@@ -105,6 +123,14 @@ class HomeScreen extends StatelessWidget {
                 ],
               );
             }),
+            Expanded(
+              child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return const NotesTask();
+                  }),
+            ),
           ],
         ),
       ),

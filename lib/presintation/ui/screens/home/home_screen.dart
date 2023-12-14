@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notely/presintation/cubit/home_cubit.dart';
 import 'package:notely/presintation/global.dart';
+import 'package:notely/presintation/ui/screens/add_screen/add_screen.dart';
 import '../../resources/app_styles.dart';
 import '../../widgets/notes_task.dart';
+import '../edit/edit.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -46,23 +48,7 @@ class HomeScreen extends StatelessWidget {
                 shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
               ),
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Add Note'),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(Icons.close)),
-                          ],
-                        ),
-                      );
-                    });
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const AddScreen()));
               },
               child: const Text('+  Add'),
             ),
@@ -124,12 +110,34 @@ class HomeScreen extends StatelessWidget {
               );
             }),
             Expanded(
-              child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return const NotesTask();
-                  }),
+              child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+                if (state is NoteLoading) {
+                  return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: state.note.length,
+                      itemBuilder: (context, index) {
+                        return NotesTask(
+                          category: state.note[index].category,
+                          title: state.note[index].title,
+                          description: state.note[index].description,
+                          delete: () {
+                            read.removeTask(state.note[index]);
+                            Navigator.pop(context);
+                          },
+                          edit: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const EditScreen()));
+                          },
+                        );
+                      });
+                } else {
+                  return Center(
+                    child: Text(
+                      'List Empty',
+                      style: AppStyle.getNotes(),
+                    ),
+                  );
+                }
+              }),
             ),
           ],
         ),

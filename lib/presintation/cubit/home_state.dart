@@ -13,3 +13,8 @@ class IsSelect extends HomeState {
   final bool isChange;
   IsSelect({required this.isChange});
 }
+
+class NoteLoading extends HomeState {
+  final List<Notes> note;
+  NoteLoading({required this.note});
+}

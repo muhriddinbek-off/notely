@@ -11,7 +11,7 @@ abstract class AppStyle {
         color: Colors.black54,
       );
   static TextStyle getTask() => const TextStyle(
-        fontSize: 19,
+        fontSize: 23,
         fontWeight: FontWeight.w700,
         color: Colors.black87,
       );
@@ -19,5 +19,10 @@ abstract class AppStyle {
         fontSize: 14,
         fontWeight: FontWeight.w500,
         color: Colors.black54,
+      );
+  static TextStyle getAddTitle() => const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: Colors.black87,
       );
 }

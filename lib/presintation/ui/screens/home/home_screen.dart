@@ -7,8 +7,17 @@ import '../../resources/app_styles.dart';
 import '../../widgets/notes_task.dart';
 import '../edit/edit.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  TextEditingController title = TextEditingController();
+  TextEditingController search = TextEditingController();
+  TextEditingController description = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +36,8 @@ class HomeScreen extends StatelessWidget {
               child: SizedBox(
                 height: 50,
                 child: TextField(
+                  onChanged: (value) => context.read<HomeCubit>().runFiltr(search.text),
+                  controller: search,
                   decoration: InputDecoration(
                     hintText: 'Search',
                     prefixIcon: const Icon(Icons.search),
@@ -125,7 +136,17 @@ class HomeScreen extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           edit: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const EditScreen()));
+                            title.text = state.note[index].title;
+                            description.text = state.note[index].description;
+
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return EditScreen(
+                                titleController: title,
+                                descriptionController: description,
+                                category: state.note[index].category,
+                                index: index,
+                              );
+                            }));
                           },
                         );
                       });

@@ -25,4 +25,9 @@ abstract class AppStyle {
         fontWeight: FontWeight.w600,
         color: Colors.black87,
       );
+  static TextStyle getSplash() => const TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.w800,
+        color: Colors.white,
+      );
 }

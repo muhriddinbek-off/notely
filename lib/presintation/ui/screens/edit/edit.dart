@@ -8,16 +8,26 @@ import '../../widgets/add_note_input.dart';
 import '../../widgets/buttons.dart';
 
 class EditScreen extends StatefulWidget {
-  const EditScreen({super.key});
+  final TextEditingController titleController;
+  final TextEditingController descriptionController;
+
+  final String category;
+  final int index;
+  const EditScreen({
+    super.key,
+    required this.category,
+    required this.descriptionController,
+    required this.titleController,
+    required this.index,
+  });
 
   @override
   State<EditScreen> createState() => _EditScreenState();
 }
 
+String dropdownValue = noteCategory[0];
+
 class _EditScreenState extends State<EditScreen> {
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  String dropdownValue = noteCategory[0];
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -35,7 +45,7 @@ class _EditScreenState extends State<EditScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Add Note',
+                    'Edit note',
                     style: AppStyle.getTask(),
                   ),
                   IconButton(
@@ -46,7 +56,7 @@ class _EditScreenState extends State<EditScreen> {
                 ],
               ),
               const SizedBox(height: 40),
-              AddNoteInput(maxlenth: 1, hint: 'Add title', title: 'Title', textEditingController: titleController),
+              AddNoteInput(maxlenth: 1, hint: 'Add title', title: 'Title', textEditingController: widget.titleController),
               const SizedBox(height: 30),
               Text('Category', style: AppStyle.getAddTitle()),
               const SizedBox(height: 10),
@@ -73,14 +83,21 @@ class _EditScreenState extends State<EditScreen> {
                 ),
               ),
               const SizedBox(height: 30),
-              AddNoteInput(maxlenth: 10, hint: 'Add description', title: 'Description', textEditingController: descriptionController),
+              AddNoteInput(maxlenth: 10, hint: 'Add description', title: 'Description', textEditingController: widget.descriptionController),
               const SizedBox(height: 20),
               ButtonWidget(
                   onchange: () {
-                    context.read<HomeCubit>().addTask(Notes(category: dropdownValue, description: descriptionController.text, title: titleController.text));
+                    context.read<HomeCubit>().noteChange(
+                          Notes(
+                            category: dropdownValue,
+                            description: widget.descriptionController.text,
+                            title: widget.titleController.text,
+                          ),
+                          widget.index,
+                        );
                     Navigator.pop(context);
                   },
-                  title: 'Add'),
+                  title: 'Edit'),
             ],
           ),
         ),

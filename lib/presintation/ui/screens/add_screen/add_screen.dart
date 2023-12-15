@@ -77,8 +77,10 @@ class _AddScreenState extends State<AddScreen> {
               const SizedBox(height: 20),
               ButtonWidget(
                   onchange: () {
-                    context.read<HomeCubit>().addTask(Notes(category: dropdownValue, description: descriptionController.text, title: titleController.text));
-                    Navigator.pop(context);
+                    if (titleController.text != '' && descriptionController.text != '') {
+                      context.read<HomeCubit>().addTask(Notes(category: dropdownValue, description: descriptionController.text, title: titleController.text));
+                      Navigator.pop(context);
+                    }
                   },
                   title: 'Add'),
             ],

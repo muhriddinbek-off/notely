@@ -18,3 +18,8 @@ class NoteLoading extends HomeState {
   final List<Notes> note;
   NoteLoading({required this.note});
 }
+
+// class NoteChange extends HomeState {
+//   final List<Notes> note;
+//   NoteChange({required this.note});
+// }
